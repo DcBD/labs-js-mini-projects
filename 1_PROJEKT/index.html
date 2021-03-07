@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <title>Document</title>
 
 </head>
+
 <body>
     <div class="container p-4">
 
@@ -17,7 +20,7 @@
                 <div class="col-md-4">
                     <div>
                         <label>Number of fields</label>
-                        <input id="no-inputs--settings" type="text" class="form-control"  type="number" />
+                        <input id="no-inputs--settings" type="text" class="form-control" type="number" />
 
                     </div>
 
@@ -28,7 +31,7 @@
 
                     </div>
                 </div>
-               
+
             </div>
         </div>
         <div>
@@ -36,18 +39,37 @@
                 Fields
             </h3>
         </div>
-        <div id="inputs-container" class="p-4">
-            <input type="number" class="data-input-field form-control" style="width:100px" />
-            <input type="number" class="data-input-field form-control"style="width:100px" />
-            <input type="number" class="data-input-field form-control" style="width:100px"/>
-            <input type="number" class="data-input-field form-control" style="width:100px"/>
+        <div id="inputs-container"  class="p-4 d-flex justify-content-between">
+            <span>No fields set.</span>
         </div>
 
-        <div>
-            <input type="text" id="sum" readonly />
-            <input type="text" id="avg" readonly />
-            <input type="text" id="min" readonly />
-            <input type="text" id="max" readonly />
+        <div class="row">
+            <div class="col-md-3">
+                <label>Sum</label>
+                <input type="text" id="sum" class="form-control" readonly />
+
+            </div>
+
+            <div class="col-md-3">
+                <label>Avg</label>
+
+                <input type="text" id="avg" class="form-control" readonly />
+
+            </div>
+
+            <div class="col-md-3">
+                <label>Min</label>
+
+                <input type="text" id="min" class="form-control" readonly />
+
+            </div>
+
+            <div class="col-md-3">
+                <label>Max</label>
+
+                <input type="text" id="max" class="form-control" readonly />
+
+            </div>
         </div>
 
         <div id="error-block" style="color:red;font-weight: bold;font-size: 10px;"></div>
@@ -56,4 +78,5 @@
 
     <script type="module" src="dist/index.js"></script>
 </body>
+
 </html>

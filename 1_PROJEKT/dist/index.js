@@ -12,10 +12,23 @@ class Calculator {
                 container === null || container === void 0 ? void 0 : container.append(input.element);
             });
         };
+        this.handleDelete = (name) => {
+            this.generatedInputs.map((input, index) => {
+                if (input.name == name) {
+                    input.element.remove();
+                    delete this.generatedInputs[index];
+                }
+            });
+            this.refreshData();
+        };
         this.generateInputs = () => {
             this.generatedInputs = [];
             for (let i = 0; i < this.inputsCountToGenerate; i++) {
-                this.generatedInputs.push(new DataInput(i, () => this.refreshData()));
+                this.generatedInputs.push(new DataInput({
+                    index: i,
+                    handleDelete: (name) => this.handleDelete(name),
+                    onInput: () => this.refreshData()
+                }));
             }
             this.renderInputs();
         };

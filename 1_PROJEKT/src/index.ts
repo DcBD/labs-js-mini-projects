@@ -16,8 +16,6 @@ class Calculator{
 
     renderInputs = () => {
 
-
-
         const container = this.inputsContainer;
 
         this.resetInputsContainer();
@@ -27,12 +25,27 @@ class Calculator{
         })
     }
 
+    handleDelete = (name : string) => {
+        this.generatedInputs.map((input,index) => {
+            if(input.name == name){
+                input.element.remove();
+                delete this.generatedInputs[index];
+            }
+        });
+
+        this.refreshData();
+    }
+
     generateInputs = () => {
  
         this.generatedInputs = [];
  
         for(let i = 0; i < this.inputsCountToGenerate; i++){
-            this.generatedInputs.push(new DataInput(i,() => this.refreshData()));
+            this.generatedInputs.push(new DataInput({
+                index: i,
+                handleDelete: (name : string) => this.handleDelete(name),
+                onInput: () => this.refreshData()
+            }));
         }
 
         this.renderInputs();
@@ -107,7 +120,7 @@ class Calculator{
     get sum() : Number{
         var sum = 0;
         const inputs = this.inputFields as NodeListOf<HTMLInputElement>;
-        
+
         inputs.forEach((element) => {
             
             sum += Number(element.value);
