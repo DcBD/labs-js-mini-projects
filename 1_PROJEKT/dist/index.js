@@ -1,25 +1,43 @@
-"use strict";
-var Calculator = /** @class */ (function () {
-    function Calculator() {
-        var _this = this;
-        this.init = function () {
-            _this.initEventListeners();
+import DataInput from "./DataInput.js";
+class Calculator {
+    constructor() {
+        this.generatedInputs = [];
+        this.init = () => {
+            this.initEventListeners();
         };
-        this.initEventListeners = function () {
-            _this.initDataInputsListeners();
+        this.renderInputs = () => {
+            const container = this.inputsContainer;
+            this.resetInputsContainer();
+            this.generatedInputs.map((input) => {
+                container === null || container === void 0 ? void 0 : container.append(input.element);
+            });
         };
-        this.initDataInputEvent = function (input) {
-            input.addEventListener('input', function () { return _this.refreshData(); });
+        this.generateInputs = () => {
+            this.generatedInputs = [];
+            for (let i = 0; i < this.inputsCountToGenerate; i++) {
+                this.generatedInputs.push(new DataInput(i, () => this.refreshData()));
+            }
+            this.renderInputs();
         };
-        this.refreshData = function () {
-            console.log("changfed");
-            _this.updateSumValueInput();
-            _this.updateAvgValueInput();
-            _this.updateMinValueInput();
-            _this.updateMaxValueInput();
+        this.resetInputsContainer = () => {
+            if (this.inputsContainer !== null)
+                this.inputsContainer.innerHTML = "";
         };
-        this.showError = function (text) {
-            var errorBlock = _this.errorBlock;
+        this.initEventListeners = () => {
+            this.initLoadFormButtonClickEvent();
+        };
+        this.initLoadFormButtonClickEvent = () => {
+            var _a;
+            (_a = this.loadFormButton) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => this.generateInputs());
+        };
+        this.refreshData = () => {
+            this.updateSumValueInput();
+            this.updateAvgValueInput();
+            this.updateMinValueInput();
+            this.updateMaxValueInput();
+        };
+        this.showError = (text) => {
+            const errorBlock = this.errorBlock;
             if (errorBlock !== null) {
                 errorBlock.innerHTML = text;
             }
@@ -27,131 +45,96 @@ var Calculator = /** @class */ (function () {
                 console.error("Error block does not exist in document");
             }
         };
-        this.updateSumValueInput = function () {
-            var input = _this.sumInput;
-            var sum = _this.sum;
+        this.updateSumValueInput = () => {
+            const input = this.sumInput;
+            const sum = this.sum;
             if (input !== null) {
                 input.value = String(sum);
             }
         };
-        this.updateAvgValueInput = function () {
-            var input = _this.avgInput;
-            var avg = _this.avg;
+        this.updateAvgValueInput = () => {
+            const input = this.avgInput;
+            const avg = this.avg;
             if (input !== null) {
                 input.value = String(avg);
             }
         };
-        this.updateMinValueInput = function () {
-            var input = _this.minInput;
-            var min = _this.min;
+        this.updateMinValueInput = () => {
+            const input = this.minInput;
+            const min = this.min;
             if (input !== null) {
                 input.value = String(min);
             }
         };
-        this.updateMaxValueInput = function () {
-            var input = _this.maxInput;
-            var max = _this.max;
+        this.updateMaxValueInput = () => {
+            const input = this.maxInput;
+            const max = this.max;
             if (input !== null) {
                 input.value = String(max);
             }
         };
         this.init();
     }
-    Calculator.prototype.initDataInputsListeners = function () {
-        var _this = this;
-        var inputs = this.inputFields;
-        inputs.forEach(function (input) {
-            console.log(input);
-            _this.initDataInputEvent(input);
+    get inputsCountToGenerate() {
+        var _a;
+        return Number((_a = this.inputsCountToGenerateInput) === null || _a === void 0 ? void 0 : _a.value);
+    }
+    get inputsCountToGenerateInput() {
+        return document.querySelector("#no-inputs--settings");
+    }
+    get inputsContainer() {
+        return document.querySelector("#inputs-container");
+    }
+    get errorBlock() {
+        return document.querySelector("#error-block");
+    }
+    get inputFields() {
+        const inputsContainer = this.inputsContainer;
+        if (this.inputsContainer !== undefined && inputsContainer !== null) {
+            return inputsContainer.querySelectorAll("input[type='number']");
+        }
+        return [];
+    }
+    get sum() {
+        var sum = 0;
+        const inputs = this.inputFields;
+        inputs.forEach((element) => {
+            sum += Number(element.value);
         });
-    };
-    Object.defineProperty(Calculator.prototype, "errorBlock", {
-        get: function () {
-            return document.querySelector("#error-block");
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Calculator.prototype, "inputFields", {
-        get: function () {
-            return document.querySelectorAll(".data-input-field");
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Calculator.prototype, "sum", {
-        get: function () {
-            var sum = 0;
-            this.inputFields.forEach(function (element) {
-                sum += Number(element.value);
-            });
-            return sum;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Calculator.prototype, "avg", {
-        get: function () {
-            var _a;
-            return (Number(this.sum) / ((_a = this.inputFields) === null || _a === void 0 ? void 0 : _a.length));
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Calculator.prototype, "sumInput", {
-        get: function () {
-            return document.querySelector("#sum");
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Calculator.prototype, "avgInput", {
-        get: function () {
-            return document.querySelector("#avg");
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Calculator.prototype, "minInput", {
-        get: function () {
-            return document.querySelector("#min");
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Calculator.prototype, "maxInput", {
-        get: function () {
-            return document.querySelector("#max");
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Calculator.prototype, "max", {
-        get: function () {
-            return Math.max.apply(Math, this.inputValues);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Calculator.prototype, "min", {
-        get: function () {
-            return Math.min.apply(Math, this.inputValues);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Calculator.prototype, "inputValues", {
-        get: function () {
-            var inputs = this.inputFields;
-            var values = [];
-            inputs.forEach(function (input) {
-                values.push(+input.value);
-            });
-            return values;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return Calculator;
-}());
-var calculator = new Calculator();
+        return sum;
+    }
+    get loadFormButton() {
+        return document.querySelector("#load_form_button");
+    }
+    get avg() {
+        var _a;
+        return (Number(this.sum) / ((_a = this.inputFields) === null || _a === void 0 ? void 0 : _a.length));
+    }
+    get sumInput() {
+        return document.querySelector("#sum");
+    }
+    get avgInput() {
+        return document.querySelector("#avg");
+    }
+    get minInput() {
+        return document.querySelector("#min");
+    }
+    get maxInput() {
+        return document.querySelector("#max");
+    }
+    get max() {
+        return Math.max(...this.inputValues);
+    }
+    get min() {
+        return Math.min(...this.inputValues);
+    }
+    get inputValues() {
+        const inputs = this.inputFields;
+        const values = [];
+        inputs.forEach((input) => {
+            values.push(+input.value);
+        });
+        return values;
+    }
+}
+const calculator = new Calculator();

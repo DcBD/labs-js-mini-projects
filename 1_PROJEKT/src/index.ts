@@ -1,8 +1,10 @@
+import DataInput from "./DataInput.js";
 
 
 class Calculator{
 
 
+    generatedInputs : Array<DataInput> = [];
 
     constructor(){
        this.init();
@@ -12,25 +14,62 @@ class Calculator{
         this.initEventListeners();
     }
 
-    initEventListeners = () => {
-        this.initDataInputsListeners();
+    renderInputs = () => {
+
+
+
+        const container = this.inputsContainer;
+
+        this.resetInputsContainer();
+
+        this.generatedInputs.map((input) => {
+            container?.append(input.element);
+        })
     }
 
-    initDataInputsListeners(){
-        const inputs = this.inputFields;
+    generateInputs = () => {
+ 
+        this.generatedInputs = [];
+ 
+        for(let i = 0; i < this.inputsCountToGenerate; i++){
+            this.generatedInputs.push(new DataInput(i,() => this.refreshData()));
+        }
 
-        inputs.forEach((input) => {
-            console.log(input);
-            this.initDataInputEvent(input);
-        });
-    } 
+        this.renderInputs();
+    }
 
-    initDataInputEvent = (input : HTMLInputElement) => {
-        input.addEventListener('input', () => this.refreshData());
+    get inputsCountToGenerate() : Number{
+        return Number(this.inputsCountToGenerateInput?.value);
+    }
+
+    get inputsCountToGenerateInput(): HTMLInputElement | null {
+        return document.querySelector("#no-inputs--settings");
+    }
+
+    
+    resetInputsContainer = () => {
+        if(this.inputsContainer !== null)
+            this.inputsContainer.innerHTML = "";
+    }
+
+
+    get inputsContainer() : Element | null{
+        return document.querySelector("#inputs-container");
+    }
+
+    initEventListeners = () => {
+
+        this.initLoadFormButtonClickEvent();
+    }
+
+
+
+
+    initLoadFormButtonClickEvent = () => {
+        this.loadFormButton?.addEventListener("click", () => this.generateInputs());
     }
 
     refreshData = () => {
-        console.log("changfed");
 
         this.updateSumValueInput();
         this.updateAvgValueInput();
@@ -53,19 +92,35 @@ class Calculator{
         return document.querySelector("#error-block");
     }
 
-    get inputFields() : NodeListOf<HTMLInputElement> {
-        return document.querySelectorAll(".data-input-field");
+    get inputFields() : NodeListOf<HTMLInputElement> | Array<any> {
+        const inputsContainer = this.inputsContainer;
+        if(this.inputsContainer !== undefined && inputsContainer !== null){
+
+            return inputsContainer.querySelectorAll("input[type='number']");
+
+        }
+        
+        return [];
+
     }
 
     get sum() : Number{
         var sum = 0;
-
-        this.inputFields.forEach((element) => {
+        const inputs = this.inputFields as NodeListOf<HTMLInputElement>;
+        
+        inputs.forEach((element) => {
             
             sum += Number(element.value);
         })
 
         return sum;
+    }
+
+
+
+    get loadFormButton() : Element | null{
+ 
+       return document.querySelector("#load_form_button");
     }
 
     get avg() : Number{
@@ -99,7 +154,7 @@ class Calculator{
     }
 
     get inputValues() : Array<number>{
-        const inputs = this.inputFields;
+        const inputs = this.inputFields as NodeListOf<HTMLInputElement>;
         const values : Array<number> = [];
         inputs.forEach((input) => {
             values.push( +input.value);
