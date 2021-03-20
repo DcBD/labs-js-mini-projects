@@ -31,6 +31,7 @@ class Calculator {
                 }));
             }
             this.renderInputs();
+            this.refreshData();
         };
         this.resetInputsContainer = () => {
             if (this.inputsContainer !== null)
@@ -38,6 +39,20 @@ class Calculator {
         };
         this.initEventListeners = () => {
             this.initLoadFormButtonClickEvent();
+            this.initDeleteSelectedButton();
+        };
+        this.initDeleteSelectedButton = () => {
+            const delete_selected_btn = document.querySelector("#delete_selected_button");
+            delete_selected_btn === null || delete_selected_btn === void 0 ? void 0 : delete_selected_btn.addEventListener("click", (e) => {
+                var _a, _b;
+                const inputs = (_a = document.querySelector("#inputs-container")) === null || _a === void 0 ? void 0 : _a.querySelectorAll("input:checked");
+                ;
+                if (inputs !== undefined) {
+                    for (const input of inputs) {
+                        (_b = input.parentElement) === null || _b === void 0 ? void 0 : _b.remove();
+                    }
+                }
+            });
         };
         this.initLoadFormButtonClickEvent = () => {
             var _a;
@@ -68,22 +83,31 @@ class Calculator {
         this.updateAvgValueInput = () => {
             const input = this.avgInput;
             const avg = this.avg;
-            if (input !== null) {
+            if (input !== null && !isNaN(+avg)) {
                 input.value = String(avg);
+            }
+            else if (input !== null) {
+                input.value = String(0);
             }
         };
         this.updateMinValueInput = () => {
             const input = this.minInput;
             const min = this.min;
-            if (input !== null) {
+            if (input !== null && min != Infinity && min != -Infinity) {
                 input.value = String(min);
+            }
+            else if (input !== null) {
+                input.value = String(0);
             }
         };
         this.updateMaxValueInput = () => {
             const input = this.maxInput;
             const max = this.max;
-            if (input !== null) {
+            if (input !== null && max != Infinity && max != -Infinity) {
                 input.value = String(max);
+            }
+            else if (input !== null) {
+                input.value = String(0);
             }
         };
         this.init();

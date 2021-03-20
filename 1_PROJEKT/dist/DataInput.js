@@ -2,15 +2,20 @@ export default class DataInput {
     constructor({ index, onInput, handleDelete, }) {
         this.create = () => {
             const container = document.createElement("div");
+            container.className = "d-flex m-4";
             const element = document.createElement('input');
+            const deleteButton = document.createElement("input");
+            deleteButton.type = "button";
+            deleteButton.className = "btn btn-danger m-1";
+            deleteButton.value = "Delete";
+            deleteButton.addEventListener("click", () => {
+                this.handleDelete(this.name);
+            });
             const checkBox = document.createElement("input");
             checkBox.type = "checkbox";
-            checkBox.addEventListener("change", (e) => {
-                const target = e.target;
-                this.handleDelete(this.name);
-                console.log(target.checked);
-            });
+            checkBox.value = this.name;
             container.append(element);
+            container.append(deleteButton);
             container.append(checkBox);
             this.setProps(element);
             return container;
@@ -19,6 +24,7 @@ export default class DataInput {
             element.type = "number";
             element.name = this.name;
             element.className = "form-control";
+            element.value = "0";
             element.addEventListener("input", () => this.onInput());
         };
         this.index = index;

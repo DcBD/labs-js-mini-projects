@@ -1,16 +1,16 @@
 import DataInput from "./DataInput.js";
 
 
-class Calculator{
+class Calculator {
 
 
-    generatedInputs : Array<DataInput> = [];
+    generatedInputs: Array<DataInput> = [];
 
-    constructor(){
-       this.init();
+    constructor() {
+        this.init();
     }
 
-    init = () : void => {
+    init = (): void => {
         this.initEventListeners();
     }
 
@@ -25,9 +25,9 @@ class Calculator{
         })
     }
 
-    handleDelete = (name : string) => {
-        this.generatedInputs.map((input,index) => {
-            if(input.name == name){
+    handleDelete = (name: string) => {
+        this.generatedInputs.map((input, index) => {
+            if (input.name == name) {
                 input.element.remove();
                 delete this.generatedInputs[index];
             }
@@ -37,21 +37,22 @@ class Calculator{
     }
 
     generateInputs = () => {
- 
+
         this.generatedInputs = [];
- 
-        for(let i = 0; i < this.inputsCountToGenerate; i++){
+
+        for (let i = 0; i < this.inputsCountToGenerate; i++) {
             this.generatedInputs.push(new DataInput({
                 index: i,
-                handleDelete: (name : string) => this.handleDelete(name),
+                handleDelete: (name: string) => this.handleDelete(name),
                 onInput: () => this.refreshData()
             }));
         }
 
         this.renderInputs();
+        this.refreshData();
     }
 
-    get inputsCountToGenerate() : Number{
+    get inputsCountToGenerate(): Number {
         return Number(this.inputsCountToGenerateInput?.value);
     }
 
@@ -59,21 +60,44 @@ class Calculator{
         return document.querySelector("#no-inputs--settings");
     }
 
-    
+
     resetInputsContainer = () => {
-        if(this.inputsContainer !== null)
+        if (this.inputsContainer !== null)
             this.inputsContainer.innerHTML = "";
     }
 
 
-    get inputsContainer() : Element | null{
+    get inputsContainer(): Element | null {
         return document.querySelector("#inputs-container");
     }
 
     initEventListeners = () => {
-
         this.initLoadFormButtonClickEvent();
+        this.initDeleteSelectedButton();
     }
+
+
+    initDeleteSelectedButton = () => {
+
+
+
+        const delete_selected_btn = document.querySelector("#delete_selected_button");
+
+        delete_selected_btn?.addEventListener("click", (e) => {
+            const inputs = document.querySelector("#inputs-container")?.querySelectorAll("input:checked") as NodeListOf<HTMLInputElement>;;
+
+            if (inputs !== undefined) {
+                for (const input of inputs) {
+                    input.parentElement?.remove();
+                }
+            }
+        })
+
+
+
+
+    }
+
 
 
 
@@ -90,39 +114,39 @@ class Calculator{
         this.updateMaxValueInput();
     }
 
-    showError = (text : string) => {
+    showError = (text: string) => {
 
         const errorBlock = this.errorBlock
 
-        if(errorBlock !== null){
+        if (errorBlock !== null) {
             errorBlock.innerHTML = text;
-        }else{
+        } else {
             console.error("Error block does not exist in document");
         }
     }
 
-    get errorBlock() : HTMLDivElement | null{
+    get errorBlock(): HTMLDivElement | null {
         return document.querySelector("#error-block");
     }
 
-    get inputFields() : NodeListOf<HTMLInputElement> | Array<any> {
+    get inputFields(): NodeListOf<HTMLInputElement> | Array<any> {
         const inputsContainer = this.inputsContainer;
-        if(this.inputsContainer !== undefined && inputsContainer !== null){
+        if (this.inputsContainer !== undefined && inputsContainer !== null) {
 
             return inputsContainer.querySelectorAll("input[type='number']");
 
         }
-        
+
         return [];
 
     }
 
-    get sum() : Number{
+    get sum(): Number {
         var sum = 0;
         const inputs = this.inputFields as NodeListOf<HTMLInputElement>;
 
         inputs.forEach((element) => {
-            
+
             sum += Number(element.value);
         })
 
@@ -131,12 +155,12 @@ class Calculator{
 
 
 
-    get loadFormButton() : Element | null{
- 
-       return document.querySelector("#load_form_button");
+    get loadFormButton(): Element | null {
+
+        return document.querySelector("#load_form_button");
     }
 
-    get avg() : Number{
+    get avg(): Number {
 
         return (Number(this.sum) / this.inputFields?.length);
     }
@@ -157,20 +181,20 @@ class Calculator{
         return document.querySelector("#max");
     }
 
-    get max() : Number{
+    get max(): Number {
         return Math.max(...this.inputValues);
 
     }
 
-    get min(): Number{
+    get min(): Number {
         return Math.min(...this.inputValues);
     }
 
-    get inputValues() : Array<number>{
+    get inputValues(): Array<number> {
         const inputs = this.inputFields as NodeListOf<HTMLInputElement>;
-        const values : Array<number> = [];
+        const values: Array<number> = [];
         inputs.forEach((input) => {
-            values.push( +input.value);
+            values.push(+input.value);
         });
 
         return values;
@@ -180,7 +204,7 @@ class Calculator{
         const input = this.sumInput;
         const sum = this.sum;
 
-        if(input !== null){
+        if (input !== null) {
             input.value = String(sum);
         }
     }
@@ -189,8 +213,11 @@ class Calculator{
         const input = this.avgInput;
         const avg = this.avg;
 
-        if(input !== null){
+        if (input !== null && !isNaN(+avg)) {
             input.value = String(avg);
+        } else if (input !== null) {
+            input.value = String(0);
+
         }
     }
 
@@ -198,8 +225,10 @@ class Calculator{
         const input = this.minInput;
         const min = this.min;
 
-        if(input !== null){
+        if (input !== null && min != Infinity && min != -Infinity) {
             input.value = String(min);
+        } else if (input !== null) {
+            input.value = String(0);
         }
     }
 
@@ -207,8 +236,10 @@ class Calculator{
         const input = this.maxInput;
         const max = this.max;
 
-        if(input !== null){
+        if (input !== null && max != Infinity && max != -Infinity) {
             input.value = String(max);
+        } else if (input !== null) {
+            input.value = String(0);
         }
     }
 }
