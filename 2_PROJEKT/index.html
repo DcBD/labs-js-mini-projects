@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <link href="./style.css" rel="stylesheet">
+    <title>Drumkit</title>
+</head>
+
+<body>
+
+    <div class="card text-center ">
+        <h1>Drumkit</h1>
+    </div>
+
+
+    <div id="sound_panel" class="card text-center d-flex flex-row justify-content-center flex-wrap">
+    </div>
+
+
+    <div style="display:none">
+        <audio data-audio-id="a">
+            <source src="./public/audio/boom.wav" type="audio/ogg">
+        </audio>
+
+        <audio data-audio-id="b">
+            <source src="./public/audio/clap.wav" type="audio/ogg">
+        </audio>
+
+        <audio data-audio-id="c">
+            <source src="./public/audio/hihat.wav" type="audio/ogg">
+        </audio>
+
+        <audio data-audio-id="c">
+            <source src="./public/audio/kick.wav" type="audio/ogg">
+        </audio>
+
+        <audio data-audio-id="e">
+            <source src="./public/audio/openhat.wav" type="audio/ogg">
+        </audio>
+
+        <audio data-audio-id="f">
+            <source src="./public/audio/ride.wav" type="audio/ogg">
+        </audio>
+
+        <audio data-audio-id="g">
+            <source src="./public/audio/snare.wav" type="audio/ogg">
+        </audio>
+
+        <audio data-audio-id="h">
+            <source src="./public/audio/tink.wav" type="audio/ogg">
+        </audio>
+
+        <audio data-audio-id="i">
+            <source src="./public/audio/tom.wav" type="audio/ogg">
+        </audio>
+    </div>
+
+
+    <script type="module" src="dist/index.js"></script>
+</body>
+
+</html>
