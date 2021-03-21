@@ -42,7 +42,7 @@ export default class DrumkitButton {
     }
 
     public render = (container: HTMLElement) => {
-        container.append(this.element);
+        container.append(this.element as HTMLButtonElement);
     }
 }
 

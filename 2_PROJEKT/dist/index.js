@@ -15,8 +15,9 @@ class DrumKit {
             }
         };
         this.playSound = (soundId) => {
-            const audioElement = this.audioElements[soundId];
-            audioElement.play();
+            const audio = this.audioElements[soundId];
+            audio.currentTime = 0;
+            audio.play();
         };
         this.generateButtons = () => {
             return this.keyboard.map((key, i) => {
@@ -33,7 +34,6 @@ class DrumKit {
             this.keyboard.map((audioId) => {
                 audios[audioId] = document.querySelector(`[data-audio-id="${audioId}"]`);
             });
-            console.log(audios);
             return audios;
         };
         this.audioElements = this.initAudioElements();

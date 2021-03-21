@@ -39,16 +39,10 @@ class DrumKit {
         }
     }
 
-
-
-
-
-
-
     private playSound = (soundId: string): void => {
-        const audioElement = this.audioElements[soundId];
-
-        audioElement.play();
+        const audio = this.audioElements[soundId];
+        audio.currentTime = 0;
+        audio.play();
     }
 
     generateButtons = (): Array<DrumkitButton> => {
@@ -72,8 +66,6 @@ class DrumKit {
         this.keyboard.map((audioId) => {
             audios[audioId] = document.querySelector(`[data-audio-id="${audioId}"]`) as HTMLAudioElement
         })
-
-        console.log(audios);
 
         return audios;
     }
