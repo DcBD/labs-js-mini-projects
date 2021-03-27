@@ -51,8 +51,10 @@ export default class Recorder {
 
     public toggle = (): void => {
         if (this.status === RecorderStatus.RECORDING) {
+
             this.pause();
         } else {
+            this.clear();
             this.resume();
         }
 

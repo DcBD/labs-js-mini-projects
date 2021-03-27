@@ -86,6 +86,7 @@ export default class RecordingPath {
     }
 
     private handleToggleRecording = () => {
+
         this.recorder.toggle();
     }
 

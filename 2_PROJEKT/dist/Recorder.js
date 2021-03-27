@@ -28,6 +28,7 @@ export default class Recorder {
                 this.pause();
             }
             else {
+                this.clear();
                 this.resume();
             }
             console.log(this.status);
