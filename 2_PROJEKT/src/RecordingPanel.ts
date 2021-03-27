@@ -5,13 +5,29 @@ import Tools from "./Tools.js";
 
 export default class RecordingPanel {
 
-
+    /**
+     * The number of paths to render.
+     */
     readonly pathsCount: Number;
 
+    /**
+     * The instances of rendered recording paths.
+     */
     readonly recordingPaths: Array<RecordingPath>;
 
+    /**
+     * Generated panel element.
+     */
     readonly generatedPanel: HTMLDivElement;
+
+    /**
+     * The audio elements (audio library).
+     */
     readonly audioElements: IAudioElements;
+
+    /**
+     * Play all button (the button that starts playing all paths).
+     */
     readonly playAllButton: ToggleButton;
 
     constructor({
@@ -34,7 +50,11 @@ export default class RecordingPanel {
         this.render(container);
     }
 
-
+    /**
+     * Initialises play all button.
+     * 
+     * @returns ToggleButton (play all) instance
+     */
     private initPlayAllButton = (): ToggleButton => {
         const btn = new ToggleButton({
             onContent: Tools.StopIcon + " Stop",
@@ -50,38 +70,39 @@ export default class RecordingPanel {
         return btn;
     }
 
+    /**
+     * Handles playing all paths.
+     */
     private handlePlayAll = () => {
-        console.log(this.playAllButton.status);
-
         if (!this.playAllButton.status) {
-
             for (const path of this.recordingPaths) {
                 path.player.stop();
             }
-
         } else {
-
-            console.log("ads");
-
             const promises = [];
-
             for (const path of this.recordingPaths) {
                 promises.push(path.player.play(path.recorder.recording));
             }
-
             Promise.all(promises).then(() => this.playAllButton.status = false);
         }
-
-
     }
 
-
+    /**
+     * Generates panel element.
+     * 
+     * @returns generated panel element.
+     */
     private generatePanel(): HTMLDivElement {
         const div = document.createElement("div");
         div.className = "d-flex flex-column align-items-center"
         return div;
     }
 
+    /**
+     * Initialises reocrding paths.
+     * 
+     * @returns recording paths.
+     */
     private initRecordingPaths = (): Array<RecordingPath> => {
         const paths: Array<RecordingPath> = [];
 
@@ -96,7 +117,9 @@ export default class RecordingPanel {
         return paths;
     }
 
-
+    /**
+     * Renders recording panel into a container.
+     */
     private render = (container: HTMLElement): void => {
 
         container.append(this.generatedPanel);
@@ -121,7 +144,9 @@ export default class RecordingPanel {
         }
     }
 
-
+    /**
+     * Enabled recording paths
+     */
     public get enabledRecordingPaths(): Array<RecordingPath> {
         return this.recordingPaths.filter(path => path.recorder.isRecording);
     }

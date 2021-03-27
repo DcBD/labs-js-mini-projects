@@ -4,14 +4,34 @@ import Recorder from './Recorder.js'
 import Player from "./Player.js";
 import RecordingPanel from "./RecordingPanel.js";
 
+/**
+ * Recording path that manages Recording and playing.
+ */
 export default class RecordingPath {
 
-
+    /**
+     * The id attribute of a element.
+     */
     readonly id: string;
+
+    /**
+     * Toggle play button.
+     */
     togglePlayButton?: ToggleButton;
 
+    /**
+     * The recorder, that records notes.
+     */
     readonly recorder: Recorder = new Recorder()
+
+    /**
+     * Player that plays notes.
+     */
     readonly player: Player;
+
+    /**
+     * Recording panel (the parent of a Recording path).
+     */
     readonly panel: RecordingPanel;
     constructor({
         container,
@@ -29,7 +49,11 @@ export default class RecordingPath {
         this.render(container);
     }
 
-
+    /**
+     * Generates panel container.
+     * 
+     * @returns generated panel container.
+     */
     private generateElement(): HTMLElement {
         const container = document.createElement("div");
         container.id = this.id;
@@ -41,6 +65,11 @@ export default class RecordingPath {
         return container;
     }
 
+    /**
+     * Initialises toggle play button.
+     * 
+     * @param container the target container.
+     */
     private initTogglePlayButton(container: HTMLElement): void {
 
         const toggleButton = new ToggleButton({
@@ -56,6 +85,11 @@ export default class RecordingPath {
         this.togglePlayButton = toggleButton;
     }
 
+    /**
+     * Initialises toggle recording button.
+     * 
+     * @param container the target container.
+     */
     private initToggleRecordingButton(container: HTMLElement): void {
 
         const toggleButton = new ToggleButton({
@@ -69,6 +103,9 @@ export default class RecordingPath {
         toggleButton.render(container);
     }
 
+    /**
+     * Handler for toggling play.
+     */
     private handleTogglePlay = () => {
         if (this.player.isPlaying) {
             if (this.togglePlayButton)
@@ -85,11 +122,19 @@ export default class RecordingPath {
 
     }
 
+    /**
+     * Handler for toggling recording.
+     */
     private handleToggleRecording = () => {
 
         this.recorder.toggle();
     }
 
+    /**
+     * Renders element into target container.
+     * 
+     * @param container target container.
+     */
     private render(container: HTMLElement) {
 
         container.append(this.generateElement());

@@ -57,9 +57,6 @@ export default class Recorder {
             this.clear();
             this.resume();
         }
-
-        console.log(this.status);
-        console.log(this.recording);
     }
 
 

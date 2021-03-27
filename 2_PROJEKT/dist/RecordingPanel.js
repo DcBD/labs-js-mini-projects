@@ -12,6 +12,11 @@ import ToggleButton from "./ToggleButton.js";
 import Tools from "./Tools.js";
 export default class RecordingPanel {
     constructor({ container, recordingPathsCount, audioElements }) {
+        /**
+         * Initialises play all button.
+         *
+         * @returns ToggleButton (play all) instance
+         */
         this.initPlayAllButton = () => {
             const btn = new ToggleButton({
                 onContent: Tools.StopIcon + " Stop",
@@ -24,15 +29,16 @@ export default class RecordingPanel {
             btn.render(this.generatedPanel);
             return btn;
         };
+        /**
+         * Handles playing all paths.
+         */
         this.handlePlayAll = () => {
-            console.log(this.playAllButton.status);
             if (!this.playAllButton.status) {
                 for (const path of this.recordingPaths) {
                     path.player.stop();
                 }
             }
             else {
-                console.log("ads");
                 const promises = [];
                 for (const path of this.recordingPaths) {
                     promises.push(path.player.play(path.recorder.recording));
@@ -40,6 +46,11 @@ export default class RecordingPanel {
                 Promise.all(promises).then(() => this.playAllButton.status = false);
             }
         };
+        /**
+         * Initialises reocrding paths.
+         *
+         * @returns recording paths.
+         */
         this.initRecordingPaths = () => {
             const paths = [];
             for (let i = 0; i < this.pathsCount; i++) {
@@ -51,6 +62,9 @@ export default class RecordingPanel {
             }
             return paths;
         };
+        /**
+         * Renders recording panel into a container.
+         */
         this.render = (container) => {
             container.append(this.generatedPanel);
         };
@@ -76,11 +90,19 @@ export default class RecordingPanel {
         this.recordingPaths = this.initRecordingPaths();
         this.render(container);
     }
+    /**
+     * Generates panel element.
+     *
+     * @returns generated panel element.
+     */
     generatePanel() {
         const div = document.createElement("div");
         div.className = "d-flex flex-column align-items-center";
         return div;
     }
+    /**
+     * Enabled recording paths
+     */
     get enabledRecordingPaths() {
         return this.recordingPaths.filter(path => path.recorder.isRecording);
     }
