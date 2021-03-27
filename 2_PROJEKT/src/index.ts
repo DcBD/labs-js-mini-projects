@@ -1,65 +1,57 @@
-import DrumkitButton from "./DrumkitButton.js";
+import { DrumkitPanel } from './DrumkitPanel.js';
+import { IAudioElements } from './interfaces.js'
+import RecordingPanel from './RecordingPanel.js';
 
 
-interface IAudioElements {
-    [name: string]: HTMLAudioElement;
-}
 
+export default class DrumKit {
 
-class DrumKit {
+    readonly id = ""
+    readonly keyboard: Array<string> = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    readonly drumkitPanel: DrumkitPanel;
+    readonly audioElements: IAudioElements;
+    readonly recordingPanel: RecordingPanel
 
-    keyboard: Array<string> = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
-
-    readonly buttons: Array<DrumkitButton>
-    readonly audioElements: IAudioElements
 
     constructor() {
-
-        this.audioElements = this.initAudioElements();
-        this.buttons = this.generateButtons();
-
+        this.drumkitPanel = new DrumkitPanel(this.keyboard, this);
+        this.audioElements = this.audioDOMElements;
+        this.recordingPanel = new RecordingPanel({
+            container: (document.getElementById("paths") as HTMLDivElement),
+            recordingPathsCount: 4,
+            audioElements: this.audioElements
+        });
 
         this.init();
 
-    }
-
-    init = (): void => {
         this.render();
     }
 
-    render = () => {
-        this.renderButtons();
-    }
+    public playSound = async (soundId: string, timeStamp: number) => {
 
-    renderButtons = () => {
-        const panel = this.soundPanel;
-
-        for (const button of this.buttons) {
-            button.render(panel);
-        }
-    }
-
-    private playSound = (soundId: string): void => {
         const audio = this.audioElements[soundId];
         audio.currentTime = 0;
         audio.play();
+
+        this.recordingPanel.onSoundIsPlayed(soundId);
     }
 
-    generateButtons = (): Array<DrumkitButton> => {
-        return this.keyboard.map((key, i) => {
 
-            const audioElement = this.audioElements[key];
+    /* #region  Init methods */
+    private init = () => {
 
-            return new DrumkitButton({
-                key: key,
-                onClick: this.playSound,
-                audioElement: audioElement
 
-            });
-        }) as Array<DrumkitButton>
+    }
+    /* #endregion */
+
+
+    /* #region  Getters */
+
+    public get container(): HTMLDivElement {
+        return document.getElementById("drumkit_panel") as HTMLDivElement;
     }
 
-    initAudioElements = (): IAudioElements => {
+    public get audioDOMElements(): IAudioElements {
 
         const audios: IAudioElements = {};
 
@@ -67,18 +59,17 @@ class DrumKit {
             audios[audioId] = document.querySelector(`[data-audio-id="${audioId}"]`) as HTMLAudioElement
         })
 
+
         return audios;
     }
 
+    /* #endregion */
 
-    get soundPanel(): HTMLDivElement {
-        return document.querySelector("#sound_panel") as HTMLDivElement;
+    private render = (): void => {
+        this.drumkitPanel.render(this.container);
     }
-
 
 
 }
 
-
-
-const kit = new DrumKit();
+new DrumKit();

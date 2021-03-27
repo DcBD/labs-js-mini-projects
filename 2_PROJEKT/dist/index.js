@@ -1,47 +1,52 @@
-import DrumkitButton from "./DrumkitButton.js";
-class DrumKit {
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { DrumkitPanel } from './DrumkitPanel.js';
+import RecordingPanel from './RecordingPanel.js';
+export default class DrumKit {
     constructor() {
-        this.keyboard = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
-        this.init = () => {
-            this.render();
-        };
-        this.render = () => {
-            this.renderButtons();
-        };
-        this.renderButtons = () => {
-            const panel = this.soundPanel;
-            for (const button of this.buttons) {
-                button.render(panel);
-            }
-        };
-        this.playSound = (soundId) => {
+        this.id = "";
+        this.keyboard = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        this.playSound = (soundId, timeStamp) => __awaiter(this, void 0, void 0, function* () {
             const audio = this.audioElements[soundId];
             audio.currentTime = 0;
             audio.play();
+            this.recordingPanel.onSoundIsPlayed(soundId);
+        });
+        /* #region  Init methods */
+        this.init = () => {
         };
-        this.generateButtons = () => {
-            return this.keyboard.map((key, i) => {
-                const audioElement = this.audioElements[key];
-                return new DrumkitButton({
-                    key: key,
-                    onClick: this.playSound,
-                    audioElement: audioElement
-                });
-            });
+        /* #endregion */
+        this.render = () => {
+            this.drumkitPanel.render(this.container);
         };
-        this.initAudioElements = () => {
-            const audios = {};
-            this.keyboard.map((audioId) => {
-                audios[audioId] = document.querySelector(`[data-audio-id="${audioId}"]`);
-            });
-            return audios;
-        };
-        this.audioElements = this.initAudioElements();
-        this.buttons = this.generateButtons();
+        this.drumkitPanel = new DrumkitPanel(this.keyboard, this);
+        this.audioElements = this.audioDOMElements;
+        this.recordingPanel = new RecordingPanel({
+            container: document.getElementById("paths"),
+            recordingPathsCount: 4,
+            audioElements: this.audioElements
+        });
         this.init();
+        this.render();
     }
-    get soundPanel() {
-        return document.querySelector("#sound_panel");
+    /* #endregion */
+    /* #region  Getters */
+    get container() {
+        return document.getElementById("drumkit_panel");
+    }
+    get audioDOMElements() {
+        const audios = {};
+        this.keyboard.map((audioId) => {
+            audios[audioId] = document.querySelector(`[data-audio-id="${audioId}"]`);
+        });
+        return audios;
     }
 }
-const kit = new DrumKit();
+new DrumKit();
