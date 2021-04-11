@@ -1,9 +1,14 @@
 import Config from "./common/Config";
 import { WeatherAPI } from "./common/WeatherAPI";
+import Widget from "./common/Widget";
+
+
 
 export class App {
 
     private readonly _api: WeatherAPI;
+    private widgets: { [key: string]: Widget } = {};
+    private readonly root: HTMLElement = document.getElementById("root");
 
     constructor() {
         this._api = new WeatherAPI(Config.apiKey);
@@ -11,12 +16,30 @@ export class App {
         this.init();
     }
 
+    public addWidget = (city: string) => {
+        this._api.getWeather(city).then(data => {
+
+            if (this.widgets[city]) {
+                this.widgets[city].refreshWidget(data);
+            } else {
+                this.widgets[city] = new Widget({
+                    root: this.root,
+                    data: data,
+                    id: city
+
+                })
+            }
+
+        })
+    }
+
     private init = () => {
 
 
-        const weather = this._api.getWeather("zakopane");
+        this.addWidget("zakopane")
+        this.addWidget("Orlando")
 
-        weather.then(_w => console.log(_w));
+
     }
 
 
