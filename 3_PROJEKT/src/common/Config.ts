@@ -24,7 +24,19 @@ export default class Config {
         }
     }
 
-    public static saveCities(data: any) {
+    public static saveCities(data: Array<string>) {
+        localStorage.setItem('WeatherAPICities', JSON.stringify(data));
+    }
+
+    public static getCities(): Array<string> {
+
+        const data = localStorage.getItem('WeatherAPICities');
+
+        if (data) {
+            return JSON.parse(data);
+        } else {
+            return [];
+        }
 
     }
 }

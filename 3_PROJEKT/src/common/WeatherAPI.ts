@@ -16,7 +16,11 @@ export class WeatherAPI {
     public getWeather(city: string): Promise<IWeather> {
         const url = this.getFetchUrl(city);
 
-        const weather = fetch(url).then(res => res.json()).catch(e => console.error(e));
+        const weather = fetch(url).then(res => res.json()).then((data: { message?: string }) => {
+            if (data.message) throw Error(data.message);
+
+            return data as IWeather;
+        });
 
 
         return weather as Promise<IWeather>;

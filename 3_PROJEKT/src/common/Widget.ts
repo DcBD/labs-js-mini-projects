@@ -13,26 +13,29 @@ interface IWidget {
 
     data: IWeather
 
+    handleRemove: (id: string) => void
+
 
 }
 
 export default class Widget {
 
-    private readonly root: HTMLElement
-    private readonly id: string
+    private readonly parent: HTMLElement
+    public readonly id: string
     private _isCreated: boolean = false;
     private data: IWeather;
     private _innerHTML: string = "";
-
+    private readonly handleRemove: (id: string) => void
     constructor({
         root,
         id,
         data,
+        handleRemove
     }: IWidget) {
-        this.root = root;
+        this.parent = root.querySelector("#widgets");
+        this.handleRemove = handleRemove;
         this.id = id;
         this.data = data;
-
         this.run();
     }
 
@@ -54,19 +57,34 @@ export default class Widget {
 
         console.log(this.data);
         this._innerHTML = `
-            <div class='w-name' >${name}</div>
-            <div class='w-main' >${main}</div>
-            <div class='w-group'>
-                <div class='w-temp'>${~~temp} ${Config.unitName}</div>
-                <div class='w-details'>
-                    <div class='w-details-title'>Ciśnienie</div>
-                    <div class='w-details-data'>${pressure} hPA</div>
-                    <div class='w-details-title'> Wilgotność </div>
-                    <div class='w-details-data'>${humidity}%</div>
+            <div class='w-content'>
+                <div class='w-name' >${name}</div>
+                <div class='w-main' >${main}</div>
+                <div class='w-group'>
+                    <div class='w-temp'>${~~temp} ${Config.unitName}</div>
+                    <div class='w-details'>
+                        <div class='w-details-title'>Ciśnienie</div>
+                        <div class='w-details-data'>${pressure} hPA</div>
+                        <div class='w-details-title'> Wilgotność </div>
+                        <div class='w-details-data'>${humidity}%</div>
+                    </div>
                 </div>
             </div>
         `;
     }
+
+    private getGeneratedButton = (): HTMLButtonElement => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "delete-btn";
+        button.innerText = "×";
+
+        button.addEventListener("click", () => { this.container.remove(); this.handleRemove(this.id) });
+
+        return button;
+    }
+
+
 
 
     public get container(): HTMLElement | null {
@@ -91,8 +109,11 @@ export default class Widget {
             const instance = document.createElement("div");
             instance.className = "widget";
             instance.id = this.id;
-            instance.innerHTML = this._innerHTML;
-
+            const wContent = document.createElement("div");
+            wContent.className = "w-content";
+            wContent.innerHTML = this._innerHTML;
+            instance.append(wContent);
+            instance.append(this.getGeneratedButton());
             this.isCreated = true;
 
             return instance;
@@ -104,9 +125,9 @@ export default class Widget {
     private render = () => {
 
         if (this.container instanceof HTMLElement) {
-            this.container.innerHTML = this._innerHTML;
+            this.container.querySelector(".w-content").innerHTML = this._innerHTML;
         } else {
-            this.root.append(this.widgetDOM)
+            this.parent.append(this.widgetDOM)
         }
     }
 
