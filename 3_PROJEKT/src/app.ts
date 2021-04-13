@@ -11,12 +11,20 @@ export class App {
     private widgets: { [key: string]: Widget } = {};
     private readonly root: HTMLElement = document.getElementById("root") as HTMLElement;
 
+    /**
+     * Creates an instance of an app.
+     */
     constructor() {
         this._api = new WeatherAPI(Config.apiKey);
 
         this.init();
     }
 
+    /**
+     * Adds widget with a city.
+     * 
+     * @param city the name of a city
+     */
     public addWidget = (city: string) => {
 
         const cityLowerCase = city.toLowerCase();
@@ -39,28 +47,35 @@ export class App {
 
     }
 
+    /**
+     * Handler for removing widget.
+     */
     public handleRemoveWidget = (id: string) => {
         delete this.widgets[id];
 
         this.save();
     }
 
+    /**
+     * Initializes component.
+     */
     private init = () => {
-
-
-        new SearchBar(this.root, (q: string) => { this.addWidget(q); });
-
+        new SearchBar(this.root, this.addWidget);
 
         this.load();
-
-
     }
 
 
+    /**
+     * Saves widgets/
+     */
     private save = () => {
         Config.saveCities(Object.values(this.widgets).map(widget => widget.id))
     }
 
+    /**
+     * Loads saved widgets.
+     */
     private load = () => {
         Config.getCities().map(city => this.addWidget(city));
     }

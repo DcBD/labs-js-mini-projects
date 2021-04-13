@@ -21,11 +21,16 @@ interface IWidget {
 export default class Widget {
 
     private readonly parent: HTMLElement
-    public readonly id: string
     private _isCreated: boolean = false;
     private data: IWeather;
     private _innerHTML: string = "";
     private readonly handleRemove: (id: string) => void
+
+    /**
+     * The id attribute of a widget.
+     */
+    public readonly id: string
+
     constructor({
         root,
         id,
@@ -39,19 +44,28 @@ export default class Widget {
         this.run();
     }
 
-
+    /**
+     * Rerenders widget with new data.
+     * 
+     * @param data data to refresh
+     */
     public refreshWidget = (data: IWeather) => {
         this.data = data;
         this.prepareHTML();
         this.render();
     }
 
+    /**
+     * Runs widget / renders.
+     */
     private run = () => {
         this.prepareHTML();
         this.render();
     }
 
-
+    /**
+     * Prepares innerHTML for a widget.
+     */
     private prepareHTML = () => {
         const { name, main: { temp, pressure, humidity }, weather: { 0: { main } } } = this.data;
 
@@ -73,6 +87,10 @@ export default class Widget {
         `;
     }
 
+    /**
+     * Generates button element.
+     * @returns generated button element.
+     */
     private getGeneratedButton = (): HTMLButtonElement => {
         const button = document.createElement("button");
         button.type = "button";
@@ -86,16 +104,24 @@ export default class Widget {
 
 
 
-
+    /**
+     * Gets widget container from DOM.
+     */
     public get container(): HTMLElement | null {
         return document.getElementById(this.id);
     }
 
-
+    /**
+     * Gets whether widget was created.
+     */
     private get isCreated(): boolean {
         return this._isCreated;
     }
 
+    /**
+     * Sets whether widget was created.
+     * If widget was created, the value can not be changed to `false`.
+     */
     private set isCreated(val: boolean) {
         if (this.isCreated) {
             console.error("Can not change is created if already is created");
@@ -104,6 +130,9 @@ export default class Widget {
         }
     }
 
+    /**
+     * Gets widget generated dom element.
+     */
     private get widgetDOM(): HTMLDivElement | null {
         if (!this.isCreated || this.container === null) {
             const instance = document.createElement("div");
@@ -122,6 +151,9 @@ export default class Widget {
         return null;
     }
 
+    /**
+     * Renders widget into DOM.
+     */
     private render = () => {
 
         if (this.container instanceof HTMLElement) {
