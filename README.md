@@ -12,4 +12,4 @@ In this repository are my projects created for web application laboratories.
 
 # 3 - Weather application that displays weather widgets for selected cities.
 
-![Showcase.gif](https://github.com/DcBD/WSEI-Web-Applications/blob/main/1_PROJEKT/Showcase.gif)
+![Showcase.gif](https://github.com/DcBD/WSEI-Web-Applications/blob/main/3_PROJEKT/Showcase.gif)
