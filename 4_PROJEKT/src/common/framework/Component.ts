@@ -1,7 +1,7 @@
 import ComponentBase from "./ComponentBase"
 import ComponentChild from "./ComponentChild";
 import ComponentOptions from "./ComponentOptions";
-
+import { v4 as uuidv4 } from 'uuid';
 
 export class Component implements ComponentBase {
 
@@ -15,32 +15,29 @@ export class Component implements ComponentBase {
 
     public className: string;
 
-    private readonly _node: HTMLElement
+    protected readonly node: HTMLElement
 
     private readonly _parentNode: HTMLElement
 
-    getNode = () => this._node;
+    getNode = () => this.node;
 
     getElementTagName = () => this.tagName;
 
     getDomNode = () => document.querySelector(`[data-key="${this.key}"]`) as HTMLElement;
 
+    getAttributeElement = <T extends Element>(attribute: string): T => this.node.querySelector<T>(`[data-attribute="${attribute}"]`);
 
 
-    constructor(tagName: keyof HTMLElementTagNameMap, {
-        className,
-        key,
+    constructor({
         parentNode,
-        content
+        node
     }: ComponentOptions, children?: Array<ComponentChild>) {
-        this.tagName = tagName;
-        this.className = className;
-        this.key = key;
+
         this._parentNode = parentNode;
         this.children = children;
-        this.content = content;
+        this.key = uuidv4();
 
-        this._node = document.createElement(tagName);
+        this.node = node ? node : document.createElement("div");
         this.initNode();
 
         this.render();
@@ -50,13 +47,6 @@ export class Component implements ComponentBase {
         const node = this.getNode();
 
         node.dataset.key = this.key;
-
-        if (undefined !== this.className) {
-            node.className = this.className;
-        }
-        if (this.content) { node.innerHTML = this.content; }
-
-
     }
 
 
@@ -64,12 +54,23 @@ export class Component implements ComponentBase {
 
 
 
+
+    update = (content: HTMLElement) => {
+        const domNode = this.getDomNode();
+
+        if (domNode) {
+            domNode.innerHTML = "";
+            domNode.append(content);
+        } else {
+            this.node.innerHTML = "";
+            this.node.append(content);
+        }
+
+    }
+
     render = () => {
 
-        this.children?.map(child => new child.ComponentName(child.tagName, {
-            ...child.options,
-            parentNode: this._parentNode,
-        }))
+        this.children?.map(child => new child.ComponentName({ parentNode: this._parentNode, ...child.props }))
 
         this._parentNode.append(this.getNode());
     }

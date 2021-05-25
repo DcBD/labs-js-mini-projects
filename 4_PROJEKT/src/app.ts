@@ -1,4 +1,5 @@
 import AppComponent from "./common/components/AppComponent";
+import NoteEditor from "./common/components/Note/NoteEditor";
 
 export class App {
 
@@ -13,12 +14,17 @@ export class App {
     private render = () => {
         const root = document.getElementById("root");
 
-        new AppComponent("div", {
-            key: "app",
+        new AppComponent({
             parentNode: root,
-
         }, [
-
+            {
+                ComponentName: NoteEditor,
+                props: {}
+            },
+            {
+                ComponentName: NoteEditor,
+                props: {}
+            }
         ]);
     }
 
