@@ -7,13 +7,16 @@ export default class ColorButton extends Component {
 
     public getColor = () => this.getAttributeElement<HTMLElement>('color').dataset.color;
 
-    constructor({ parentNode, color }: { parentNode: HTMLElement, color: string }) {
+    public readonly onClick: (color: string) => void
+
+    constructor({ parentNode, color, onClick }: { parentNode: HTMLElement, color: string, onClick: (color: string) => void }) {
 
         super({
             node: document.createElement("div"),
             parentNode: parentNode,
         })
         this.color = color;
+        this.onClick = onClick;
 
         this.update(this.generateContent());
 
@@ -32,6 +35,7 @@ export default class ColorButton extends Component {
         _root.addEventListener("click", this.handleClick);
         _root.style.backgroundColor = this.color;
         _root.dataset.attribute = 'color';
+        _root.addEventListener("click", () => this.onClick(this.color));
         /* #endregion */
 
 

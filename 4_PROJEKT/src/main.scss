@@ -59,6 +59,7 @@ textarea {
   margin: 5px;
   cursor: pointer;
   transition: height ease-in 0.1s;
+  border: solid rgba(128, 128, 128, 0.281) 1px;
   &:hover {
     height: 65px;
   }
@@ -73,4 +74,24 @@ textarea {
   -webkit-box-shadow: 1px 0px 16px 0px rgba(0, 0, 0, 0.35);
   -moz-box-shadow: 1px 0px 16px 0px rgba(0, 0, 0, 0.35);
   right: 0px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#featured {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  border: solid rgba(128, 128, 128, 0.384);
+  background: rgba(83, 83, 83, 0.205);
+
+  & > div {
+    margin: 5px;
+  }
+}
+
+.footer {
+  display: flex;
 }

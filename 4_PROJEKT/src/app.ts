@@ -1,4 +1,6 @@
+import AppStorage from "./common/AppStorage";
 import AppComponent from "./common/components/AppComponent";
+import Featured from "./common/components/Dashboard/Featured";
 import NoteEditor from "./common/components/Note/NoteEditor";
 
 export class App {
@@ -17,6 +19,12 @@ export class App {
         new AppComponent({
             parentNode: root,
         }, [
+            {
+                ComponentName: Featured,
+                props: {
+                    notes: AppStorage.getData().filter(i => i.featured)
+                }
+            },
             {
                 ComponentName: NoteEditor,
                 props: {}
