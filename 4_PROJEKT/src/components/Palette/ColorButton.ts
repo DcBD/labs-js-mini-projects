@@ -1,5 +1,5 @@
 import { Component } from "../../framework/Component";
-import Icons from "../../Icons";
+import Icons from "../../misc/Icons";
 
 export default class ColorButton extends Component {
 
@@ -28,7 +28,7 @@ export default class ColorButton extends Component {
 
     private generateContent = (): HTMLElement => {
 
-        console.log(this.color);
+
         /* #region  ROOT */
         const _root = document.createElement("div");
         _root.className = "color-picker";
@@ -45,7 +45,7 @@ export default class ColorButton extends Component {
 
 
     handleClick = (e: MouseEvent) => {
-        console.log("clicked");
+
     }
 
 

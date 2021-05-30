@@ -3,6 +3,8 @@ import ComponentChild from "./ComponentChild";
 import ComponentOptions from "./ComponentOptions";
 import { v4 as uuidv4 } from 'uuid';
 
+
+
 export class Component implements ComponentBase {
 
     public readonly tagName: keyof HTMLElementTagNameMap;

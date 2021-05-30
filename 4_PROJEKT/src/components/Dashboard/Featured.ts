@@ -1,13 +1,14 @@
-import { NotesList } from "../../AppStorage";
+
 import { Component } from "../../framework/Component";
+import INoteEntity from "../../interfaces/INoteEntity";
 import NoteEditor from "../Note/NoteEditor";
 
 
 export default class Featured extends Component {
 
-    private notes: NotesList;
+    private notes: Array<INoteEntity>;
 
-    constructor({ parentNode, notes }: { parentNode: HTMLElement, notes: NotesList }) {
+    constructor({ parentNode, notes }: { parentNode: HTMLElement, notes: Array<INoteEntity> }) {
 
         super({
             node: document.createElement("div"),
@@ -22,7 +23,7 @@ export default class Featured extends Component {
     }
 
 
-    public setNotes = (notes: NotesList) => {
+    public setNotes = (notes: Array<INoteEntity>) => {
         this.notes = notes;
     }
 

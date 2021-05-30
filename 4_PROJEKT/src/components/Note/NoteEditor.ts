@@ -1,10 +1,11 @@
-import { Note } from "../../AppStorage";
+
 import { Component } from "../../framework/Component";
-import Icons from "../../Icons";
+import INoteEntity from "../../interfaces/INoteEntity";
+import Icons from "../../misc/Icons";
 import Pallette from "../Palette/Palette";
 
 
-interface Props extends Note {
+interface Props extends INoteEntity {
     parentNode: HTMLElement
 }
 export default class NoteEditor extends Component {
@@ -12,7 +13,7 @@ export default class NoteEditor extends Component {
     public getTitle = () => this.getAttributeElement<HTMLInputElement>("title").value
     public getText = () => this.getAttributeElement<HTMLTextAreaElement>("text").value
 
-    private props: Note;
+    private props: INoteEntity;
     private isFeatured: boolean;
 
     constructor(props: Props) {

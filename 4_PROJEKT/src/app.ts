@@ -1,7 +1,11 @@
-import AppStorage from "./common/AppStorage";
-import AppComponent from "./common/components/AppComponent";
-import Featured from "./common/components/Dashboard/Featured";
-import NoteEditor from "./common/components/Note/NoteEditor";
+
+import AppComponent from "./components/AppComponent";
+import Featured from "./components/Dashboard/Featured";
+import NoteEditor from "./components/Note/NoteEditor";
+import firebase from "firebase";
+import { configService } from "./misc/ConfigService";
+
+
 
 export class App {
 
@@ -10,10 +14,12 @@ export class App {
      */
     constructor() {
         this.render();
+        console.log(configService);
     }
 
 
     private render = () => {
+
         const root = document.getElementById("root");
 
         new AppComponent({
@@ -22,7 +28,7 @@ export class App {
             {
                 ComponentName: Featured,
                 props: {
-                    notes: AppStorage.getData().filter(i => i.featured)
+                    notes: []
                 }
             },
             {

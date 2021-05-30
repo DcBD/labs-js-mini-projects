@@ -1,5 +1,5 @@
 import { Component } from "../../framework/Component";
-import Icons from "../../Icons";
+import Icons from "../../misc/Icons";
 import ColorButton from "./ColorButton";
 
 export default class Pallette extends Component {
