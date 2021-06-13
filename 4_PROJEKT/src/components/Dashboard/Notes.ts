@@ -4,7 +4,7 @@ import INoteEntity from "../../interfaces/INoteEntity";
 import NoteEditor from "../Note/NoteEditor";
 
 
-export default class Featured extends Component {
+export default class Notes extends Component {
 
     private notes: Array<INoteEntity>;
 
@@ -18,7 +18,6 @@ export default class Featured extends Component {
         this.setNotes(notes);
 
         this.update(this.generateContent());
-
     }
 
 
@@ -31,13 +30,12 @@ export default class Featured extends Component {
 
 
         const _root = document.createElement("div");
-        _root.id = "featured";
+        _root.id = "notes";
 
-        console.log(this.notes[0]);
+
 
         new Component({ parentNode: _root }, [
             ...this.notes.map(note => {
-
                 return {
                     ComponentName: NoteEditor,
                     props: note

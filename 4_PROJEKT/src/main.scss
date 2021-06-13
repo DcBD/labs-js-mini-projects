@@ -80,16 +80,25 @@ textarea {
   display: none !important;
 }
 
-#featured {
+#featured,
+#notes {
   width: 100%;
   min-height: 50vh;
   display: flex;
-  border: solid rgba(128, 128, 128, 0.384);
-  background: rgba(83, 83, 83, 0.205);
 
   & > div {
     margin: 5px;
   }
+}
+
+#featured {
+  border: solid rgba(128, 128, 128, 0.384);
+  background: rgba(83, 83, 83, 0.205);
+}
+
+#notes {
+  border: solid rgba(221, 221, 221, 0.384);
+  background: rgba(226, 226, 226, 0.205);
 }
 
 .footer {

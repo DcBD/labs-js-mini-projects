@@ -1,6 +1,7 @@
 
 import { Component } from "../../framework/Component";
 import INoteEntity from "../../interfaces/INoteEntity";
+import { configService } from "../../misc/ConfigService";
 import Icons from "../../misc/Icons";
 import Pallette from "../Palette/Palette";
 
@@ -12,6 +13,7 @@ export default class NoteEditor extends Component {
 
     public getTitle = () => this.getAttributeElement<HTMLInputElement>("title").value
     public getText = () => this.getAttributeElement<HTMLTextAreaElement>("text").value
+    public color: string;
 
     private props: INoteEntity;
     private isFeatured: boolean;
@@ -35,6 +37,7 @@ export default class NoteEditor extends Component {
         const container = this.getNode().querySelector('.card') as HTMLDivElement;
 
         container.style.backgroundColor = color;
+        this.color = color;
     }
 
     private generateContent = (): HTMLElement => {
@@ -89,13 +92,30 @@ export default class NoteEditor extends Component {
         });
 
         _toggleFeatured.addEventListener("mouseleave", (e) => {
+            this.isFeatured = !this.isFeatured;
+
             const element = e.target as HTMLDivElement;
             element.innerHTML = this.isFeatured ? Icons.bookmarkFilled() : Icons.bookmark();
         });
-
-
-
         _footer.append(_toggleFeatured);
+
+        const _save = document.createElement("div");
+        _save.className = "action-btn"
+        _save.innerHTML = Icons.check()
+        _save.addEventListener("click", () => {
+
+            configService.storage.save({
+                id: this.props.id,
+                color: this.color,
+                featured: this.isFeatured,
+                text: this.getText(),
+                title: this.getTitle()
+            });
+        })
+        _footer.append(_save);
+
+
+
 
 
 

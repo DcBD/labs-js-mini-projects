@@ -14,7 +14,8 @@ export default class FirebaseStorage extends AppStorageBase {
         this.db = this.firebase.firestore();
     }
 
-    save(notes: INoteEntity[]): void {
+    save(notes: INoteEntity): void {
+        console.log("saving");
         this.db.collection("notes").add({
             first: "Alan",
             middle: "Mathison",
@@ -23,7 +24,8 @@ export default class FirebaseStorage extends AppStorageBase {
         })
     }
     getAll(): INoteEntity[] {
-        throw new Error("Method not implemented.");
+        console.log(this.db.collection("notes").get())
+        return []
     }
 
 }

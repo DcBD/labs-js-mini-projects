@@ -1,7 +1,7 @@
 import { IConfig } from "./interfaces/IConfig";
 
 const config: IConfig = {
-    storageType: "Firebase",
+    storageType: "LocalStorage",
     firebaseConfig: {
         apiKey: "AIzaSyD32Fc8SdZWT1WK4jZE_L9q1zVPXubyYCY",
         authDomain: "notekeep-bf2f5.firebaseapp.com",

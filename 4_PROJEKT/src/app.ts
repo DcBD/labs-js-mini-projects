@@ -4,6 +4,7 @@ import Featured from "./components/Dashboard/Featured";
 import NoteEditor from "./components/Note/NoteEditor";
 import firebase from "firebase";
 import { configService } from "./misc/ConfigService";
+import Notes from "./components/Dashboard/Notes";
 
 
 
@@ -14,7 +15,7 @@ export class App {
      */
     constructor() {
         this.render();
-        console.log(configService);
+
     }
 
 
@@ -28,17 +29,15 @@ export class App {
             {
                 ComponentName: Featured,
                 props: {
-                    notes: []
+                    notes: configService.storage.getAllFeatured()
                 }
             },
             {
-                ComponentName: NoteEditor,
-                props: {}
+                ComponentName: Notes,
+                props: {
+                    notes: configService.storage.getAllNotFeatured()
+                }
             },
-            {
-                ComponentName: NoteEditor,
-                props: {}
-            }
         ]);
     }
 
