@@ -108,7 +108,7 @@ export default class NoteEditor extends Component {
 
 
         const _save = document.createElement("div");
-        _save.className = "action-btn"
+        _save.className = "action-btn save"
         _save.innerHTML = Icons.check()
         _save.addEventListener("click", () => {
 

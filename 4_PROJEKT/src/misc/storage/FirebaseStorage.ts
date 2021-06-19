@@ -16,12 +16,13 @@ export default class FirebaseStorage extends AppStorageBase {
         this.db = this.firebase.firestore();
     }
 
-    save(note: INoteEntity): void {
+    save(note: INoteEntity, reload: boolean = true): void {
         if (note.id) {
             const id = note.id;
             delete (note.id);
             this.db.collection("notes").doc(id).update({ ...note }).then(() => {
-                window.location.reload();
+                if (reload)
+                    window.location.reload();
             })
         } else {
             this.db.collection("notes").add({
@@ -30,7 +31,8 @@ export default class FirebaseStorage extends AppStorageBase {
                 text: note.text,
                 featured: note.featured
             }).then(() => {
-                window.location.reload();
+                if (reload)
+                    window.location.reload();
             })
         }
 

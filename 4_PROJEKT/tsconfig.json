@@ -2,12 +2,13 @@
     "compilerOptions": {
         "sourceMap": true,
         // "strictNullChecks": true,
-        "noImplicitAny": true,
-        "module": "commonjs",
+        "noImplicitAny": false,
+        "module": "CommonJS",
         "target": "es6",
         "removeComments": true,
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "tests"
     ],
 }

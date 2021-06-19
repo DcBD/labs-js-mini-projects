@@ -11,6 +11,7 @@ import NoteCreator from "./components/Dashboard/NoteCreator";
 
 export class App {
 
+    public appComponent: AppComponent;
     /**
      * Creates an instance of an app.
      */
@@ -25,7 +26,7 @@ export class App {
         const root = document.getElementById("root");
 
 
-        new AppComponent({
+        this.appComponent = new AppComponent({
             parentNode: root,
         }, [
             {

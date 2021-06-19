@@ -16,7 +16,7 @@ export default class ConfigService {
         this.storage = this.initStorage(ConfigService.config.storageType);
     }
 
-    private initStorage = (type: StorageType): IAppStorage => {
+    public initStorage = (type: StorageType): IAppStorage => {
         switch (type) {
             case "Firebase":
                 return new FirebaseStorage();

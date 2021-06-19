@@ -12,7 +12,7 @@ export default abstract class AppStorageBase implements IAppStorage {
     }
     abstract getAllNotFeatured(): Promise<INoteEntity[]>
     abstract remove(id: string): void
-    abstract save(note: INoteEntity): void
+    abstract save(note: INoteEntity, reload?: boolean): void
 
 
 

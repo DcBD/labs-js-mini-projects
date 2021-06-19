@@ -14,7 +14,7 @@ export default class LocalStorage extends AppStorageBase {
      * 
      * @param notes notes
      */
-    public save = async (note: INoteEntity): Promise<void> => {
+    public save = async (note: INoteEntity, reload: boolean = true): Promise<void> => {
         const notes: INoteEntity[] = await this.getAll();
 
         const updated = notes.some((_note, index) => {
@@ -33,7 +33,8 @@ export default class LocalStorage extends AppStorageBase {
 
         localStorage.setItem('KeepNote', JSON.stringify(notes));
 
-        window.location.reload();
+        if (reload)
+            window.location.reload();
     }
 
     /**

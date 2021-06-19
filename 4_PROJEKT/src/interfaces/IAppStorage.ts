@@ -2,7 +2,7 @@ import INoteEntity from "./INoteEntity";
 
 export default interface IAppStorage {
 
-    save(note: INoteEntity): void
+    save(note: INoteEntity, reload?: boolean): void
 
     getAll(): Promise<INoteEntity[]>
 
