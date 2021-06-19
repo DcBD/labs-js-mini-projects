@@ -5,19 +5,18 @@ import INoteEntity from '../../interfaces/INoteEntity';
 
 export default abstract class AppStorageBase implements IAppStorage {
 
-    getAllFeatured(): INoteEntity[] {
-        return this.getAll().filter(note => note.featured);
+    async getAllFeatured(): Promise<INoteEntity[]> {
+        const notes = await this.getAll();
+        return notes.filter(note => note.featured);
 
     }
-    getAllNotFeatured(): INoteEntity[] {
-        return this.getAll().filter(note => !note.featured);
-    }
-
+    abstract getAllNotFeatured(): Promise<INoteEntity[]>
+    abstract remove(id: string): void
     abstract save(note: INoteEntity): void
 
 
 
-    public getAll(): INoteEntity[] {
+    public async getAll(): Promise<INoteEntity[]> {
         const data = localStorage.getItem('Notes');
 
         if (data) {

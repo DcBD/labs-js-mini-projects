@@ -7,7 +7,7 @@ export default class Pallette extends Component {
     public getTitle = () => this.getAttributeElement<HTMLInputElement>("title").value
     public getText = () => this.getAttributeElement<HTMLTextAreaElement>("text").value
 
-    public colors = ['white', 'red', 'green', 'blue', 'orange']
+    public colors = ['white', '#ff9494', '#baffba', '#b1e2ff', '#ffd2b1', '#f5ffb1']
     public isToggled = true;
     public color: string = "white"
     public setColor: (color: string) => void

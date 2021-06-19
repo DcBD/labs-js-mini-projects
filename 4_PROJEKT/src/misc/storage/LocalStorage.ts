@@ -4,8 +4,9 @@ import AppStorageBase from "./AppStorageBase";
 import { v4 as uuidv4 } from 'uuid';
 export default class LocalStorage extends AppStorageBase {
 
-    getAllNotFeatured(): INoteEntity[] {
-        return this.getAll().filter(note => !note.featured);
+    async getAllNotFeatured(): Promise<INoteEntity[]> {
+        const notes = await this.getAll();
+        return notes.filter(note => !note.featured);
     }
 
     /**
@@ -13,13 +14,14 @@ export default class LocalStorage extends AppStorageBase {
      * 
      * @param notes notes
      */
-    public save = (note: INoteEntity): void => {
-        const notes: INoteEntity[] = this.getAll();
+    public save = async (note: INoteEntity): Promise<void> => {
+        const notes: INoteEntity[] = await this.getAll();
 
         const updated = notes.some((_note, index) => {
 
             if (_note.id == note.id) {
                 notes[index] = note;
+                return true;
             }
 
             return false;
@@ -30,6 +32,8 @@ export default class LocalStorage extends AppStorageBase {
         }
 
         localStorage.setItem('KeepNote', JSON.stringify(notes));
+
+        window.location.reload();
     }
 
     /**
@@ -37,7 +41,7 @@ export default class LocalStorage extends AppStorageBase {
      * 
      * @returns notes
      */
-    public getAll = (): Array<INoteEntity> => {
+    public getAll = async (): Promise<Array<INoteEntity>> => {
         const data = localStorage.getItem('KeepNote');
 
         if (data) {
@@ -45,6 +49,15 @@ export default class LocalStorage extends AppStorageBase {
         } else {
             return [];
         }
+    }
+
+    public remove = async (id: string) => {
+        const data = await this.getAll();
+
+        localStorage.setItem('KeepNote', JSON.stringify(data.filter(note => note.id != id)));
+
+        window.location.reload();
+
     }
 
 }

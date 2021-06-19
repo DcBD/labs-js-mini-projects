@@ -18,7 +18,7 @@ textarea {
   width: 100%;
   border: none;
   padding: 5px 10px;
-  font-size: 25px;
+  font-size: 14px;
   background: transparent;
   box-sizing: border-box;
   cursor: pointer;
@@ -35,15 +35,15 @@ textarea {
 }
 
 .action-btn {
-  padding: 10px;
-  width: 50px;
-  height: 50px;
+  padding: 5px;
+  width: 35px;
+  height: 35px;
   transition: background-color 0.1s ease-in;
   cursor: pointer;
 
   svg {
-    width: 32px !important;
-    height: 32px !important;
+    width: 25px !important;
+    height: 25px !important;
   }
 
   border-radius: 50px;
@@ -53,8 +53,8 @@ textarea {
 }
 
 .color-picker {
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   border-radius: 50px;
   margin: 5px;
   cursor: pointer;
@@ -92,15 +92,26 @@ textarea {
 }
 
 #featured {
-  border: solid rgba(128, 128, 128, 0.384);
-  background: rgba(83, 83, 83, 0.205);
+  border: solid rgb(255, 196, 0);
+  background: rgba(248, 248, 248, 0.205);
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #notes {
-  border: solid rgba(221, 221, 221, 0.384);
-  background: rgba(226, 226, 226, 0.205);
+  border: solid rgba(0, 0, 0, 0.384);
+  background: rgba(255, 255, 255, 0.205);
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .footer {
   display: flex;
+}
+
+#NoteCreator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
 }

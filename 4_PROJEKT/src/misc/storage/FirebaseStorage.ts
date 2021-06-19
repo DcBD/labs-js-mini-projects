@@ -2,7 +2,9 @@ import INoteEntity from "../../interfaces/INoteEntity";
 import AppStorageBase from "./AppStorageBase";
 import firebase from "firebase";
 import ConfigService from "../ConfigService";
+import { v4 as uuidv4 } from 'uuid';
 export default class FirebaseStorage extends AppStorageBase {
+
 
     readonly db: firebase.firestore.Firestore;
     readonly firebase: firebase.app.App;
@@ -14,18 +16,74 @@ export default class FirebaseStorage extends AppStorageBase {
         this.db = this.firebase.firestore();
     }
 
-    save(notes: INoteEntity): void {
-        console.log("saving");
-        this.db.collection("notes").add({
-            first: "Alan",
-            middle: "Mathison",
-            last: "Turing",
-            born: 1912
-        })
+    save(note: INoteEntity): void {
+        if (note.id) {
+            const id = note.id;
+            delete (note.id);
+            this.db.collection("notes").doc(id).update({ ...note }).then(() => {
+                window.location.reload();
+            })
+        } else {
+            this.db.collection("notes").add({
+                title: note.title,
+                color: note.color,
+                text: note.text,
+                featured: note.featured
+            }).then(() => {
+                window.location.reload();
+            })
+        }
+
+
     }
-    getAll(): INoteEntity[] {
-        console.log(this.db.collection("notes").get())
-        return []
+
+    async getAll(): Promise<INoteEntity[]> {
+        const response = await this.db.collection('notes').get();
+
+        const notes = response.docs.map<INoteEntity>(doc => {
+            const note = doc.data() as INoteEntity;
+            return {
+                ...note,
+                id: doc.id
+            }
+        });
+
+        return notes;
+    }
+
+    async getAllFeatured(): Promise<INoteEntity[]> {
+        const response = await this.db.collection("notes").where("featured", "==", true).get();
+
+        const notes = response.docs.map<INoteEntity>(doc => {
+            const note = doc.data() as INoteEntity;
+            return {
+                ...note,
+                id: doc.id
+            }
+        });
+
+        return notes
+    }
+
+    async getAllNotFeatured(): Promise<INoteEntity[]> {
+        const response = await this.db.collection("notes").where("featured", "==", false).get();
+
+        const notes = response.docs.map<INoteEntity>(doc => {
+            const note = doc.data() as INoteEntity;
+            return {
+                ...note,
+                id: doc.id
+            }
+        });
+
+        return notes
+    }
+
+
+    public remove(id: string): void {
+
+        this.db.collection("notes").doc(id).delete().then(() => window.location.reload())
+
     }
 
 }

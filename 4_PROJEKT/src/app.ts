@@ -5,6 +5,7 @@ import NoteEditor from "./components/Note/NoteEditor";
 import firebase from "firebase";
 import { configService } from "./misc/ConfigService";
 import Notes from "./components/Dashboard/Notes";
+import NoteCreator from "./components/Dashboard/NoteCreator";
 
 
 
@@ -23,9 +24,14 @@ export class App {
 
         const root = document.getElementById("root");
 
+
         new AppComponent({
             parentNode: root,
         }, [
+            {
+                ComponentName: NoteCreator,
+                props: {}
+            },
             {
                 ComponentName: Featured,
                 props: {

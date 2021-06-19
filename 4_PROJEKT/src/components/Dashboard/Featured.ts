@@ -8,16 +8,19 @@ export default class Featured extends Component {
 
     private notes: Array<INoteEntity>;
 
-    constructor({ parentNode, notes }: { parentNode: HTMLElement, notes: Array<INoteEntity> }) {
+    constructor({ parentNode, notes }: { parentNode: HTMLElement, notes: Promise<Array<INoteEntity>> }) {
 
         super({
             node: document.createElement("div"),
             parentNode: parentNode,
         })
 
-        this.setNotes(notes);
+        notes.then(_notes => {
+            this.setNotes(_notes);
+            this.update(this.generateContent());
 
-        this.update(this.generateContent());
+        })
+
 
     }
 
@@ -32,8 +35,6 @@ export default class Featured extends Component {
 
         const _root = document.createElement("div");
         _root.id = "featured";
-
-        console.log(this.notes[0]);
 
         new Component({ parentNode: _root }, [
             ...this.notes.map(note => {

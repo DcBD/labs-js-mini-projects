@@ -25,6 +25,7 @@ export default class NoteEditor extends Component {
             parentNode: props.parentNode,
         })
         this.props = props;
+        this.color = props.color;
         this.isFeatured = !!props.featured;
         this.update(this.generateContent());
 
@@ -40,12 +41,22 @@ export default class NoteEditor extends Component {
         this.color = color;
     }
 
+    private save = () => {
+        configService.storage.save({
+            id: this.props.id,
+            color: this.color,
+            featured: this.isFeatured,
+            text: this.getText(),
+            title: this.getTitle()
+        });
+    }
+
     private generateContent = (): HTMLElement => {
 
         /* #region  ROOT */
         const _root = document.createElement("div");
         _root.className = "card";
-        _root.setAttribute("style", "width:500px");
+        _root.setAttribute("style", "width:330px");
         if (this.props.color)
             _root.style.backgroundColor = this.props.color;
         /* #endregion */
@@ -86,36 +97,37 @@ export default class NoteEditor extends Component {
         const _toggleFeatured = document.createElement("div");
         _toggleFeatured.className = "action-btn"
         _toggleFeatured.innerHTML = this.isFeatured ? Icons.bookmarkFilled() : Icons.bookmark();
-        _toggleFeatured.addEventListener("mouseenter", (e) => {
-            const element = e.target as HTMLDivElement;
-            element.innerHTML = this.isFeatured ? Icons.bookmark() : Icons.bookmarkFilled();
-        });
-
-        _toggleFeatured.addEventListener("mouseleave", (e) => {
+        _toggleFeatured.addEventListener("click", () => {
             this.isFeatured = !this.isFeatured;
+            _toggleFeatured.innerHTML = this.isFeatured ? Icons.bookmarkFilled() : Icons.bookmark();
+            this.save()
+        })
 
-            const element = e.target as HTMLDivElement;
-            element.innerHTML = this.isFeatured ? Icons.bookmarkFilled() : Icons.bookmark();
-        });
         _footer.append(_toggleFeatured);
+
+
 
         const _save = document.createElement("div");
         _save.className = "action-btn"
         _save.innerHTML = Icons.check()
         _save.addEventListener("click", () => {
 
-            configService.storage.save({
-                id: this.props.id,
-                color: this.color,
-                featured: this.isFeatured,
-                text: this.getText(),
-                title: this.getTitle()
-            });
+            this.save()
+
         })
         _footer.append(_save);
 
 
+        if (this.props.id) {
+            const _delete = document.createElement("div");
+            _delete.className = "action-btn"
+            _delete.innerHTML = Icons.trash()
+            _delete.addEventListener("click", () => {
 
+                configService.storage.remove(this.props.id);
+            })
+            _footer.append(_delete);
+        }
 
 
 

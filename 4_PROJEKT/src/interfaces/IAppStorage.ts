@@ -4,11 +4,13 @@ export default interface IAppStorage {
 
     save(note: INoteEntity): void
 
-    getAll(): Array<INoteEntity>
+    getAll(): Promise<INoteEntity[]>
 
-    getAllFeatured(): Array<INoteEntity>
+    getAllFeatured(): Promise<INoteEntity[]>
 
-    getAllNotFeatured(): Array<INoteEntity>
+    getAllNotFeatured(): Promise<INoteEntity[]>
 
 
+
+    remove(id: string): void
 }

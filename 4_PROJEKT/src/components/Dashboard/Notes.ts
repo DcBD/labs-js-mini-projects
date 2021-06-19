@@ -8,16 +8,19 @@ export default class Notes extends Component {
 
     private notes: Array<INoteEntity>;
 
-    constructor({ parentNode, notes }: { parentNode: HTMLElement, notes: Array<INoteEntity> }) {
+    constructor({ parentNode, notes }: { parentNode: HTMLElement, notes: Promise<Array<INoteEntity>> }) {
 
         super({
             node: document.createElement("div"),
             parentNode: parentNode,
         })
 
-        this.setNotes(notes);
+        notes.then(_notes => {
+            this.setNotes(_notes);
 
-        this.update(this.generateContent());
+            this.update(this.generateContent());
+        })
+
     }
 
 
